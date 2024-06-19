@@ -6,6 +6,8 @@ namespace PairParade {
   public class Referee : MonoBehaviour {
     public event System.Action Matched;
     public event System.Action Mismatched;
+    public event System.Action GameStarted;
+    public event System.Action GameCompleted;
     public event System.Action GameOver;
     public event System.Action<GameSession> SessionChanged;
 
@@ -25,6 +27,13 @@ namespace PairParade {
     CardState _selectedCardState;
 
     void Start() {
+      Matched += () => {
+        if (Session.cardStates.TrueForAll(s => s.IsMatched)) {
+          StopAllCoroutines();
+          GameCompleted?.Invoke();
+        }
+      };
+
       var session = GameSession.Create(gameplaySettings, cards);
 
       foreach (var cardState in session.cardStates) {
@@ -32,6 +41,7 @@ namespace PairParade {
           if (!isMatching) {
             cardState.IsFlipped = false;
             _selectedCardState = null;
+            return;
           }
 
           cardState.IsFlipped = true;
@@ -40,12 +50,18 @@ namespace PairParade {
             _selectedCardState = cardState;
           } else if (cardState.card == _selectedCardState.card) {
             cardState.IsMatched = true;
+            _selectedCardState.IsMatched = true;
+            _selectedCardState = null;
             session.MatchCount++;
             session.FlipCount++;
-            Matched.Invoke();
+            Matched?.Invoke();
           } else {
+            _selectedCardState.IsFlipped = false;
+            _selectedCardState.IsMatching = false;
+            cardState.IsFlipped = false;
+            cardState.IsMatching = false;
             session.FlipCount++;
-            Mismatched.Invoke();
+            Mismatched?.Invoke();
           }
         };
       }
@@ -61,6 +77,7 @@ namespace PairParade {
         cardState.IsFlipped = false;
       }
 
+      GameStarted?.Invoke();
       StartCoroutine(CheckRemainingTime());
     }
 
@@ -72,7 +89,7 @@ namespace PairParade {
         Session.RemainingTime -= Time.deltaTime;
       }
 
-      GameOver.Invoke();
+      GameOver?.Invoke();
     }
   }
 }
