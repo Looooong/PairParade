@@ -4,12 +4,12 @@ using UnityEngine;
 
 namespace PairParade {
   public class Referee : MonoBehaviour {
-    public event System.Action Selected;
-    public event System.Action Matched;
-    public event System.Action Mismatched;
-    public event System.Action GameStarted;
-    public event System.Action GameCompleted;
-    public event System.Action GameOver;
+    public static event System.Action Selected;
+    public static event System.Action Matched;
+    public static event System.Action Mismatched;
+    public static event System.Action GameStarted;
+    public static event System.Action GameCompleted;
+    public static event System.Action GameOver;
     public event System.Action<GameSession> SessionChanged;
 
     public GameplaySettings gameplaySettings;

@@ -21,18 +21,18 @@ namespace PairParade.UI {
       BackFace.style.backgroundImage = new(cardState.card.backFace);
 
       RegisterCallback<AttachToPanelEvent>(e => {
-        referee.GameStarted += OnGameStarted;
-        referee.GameCompleted += OnGameStopped;
-        referee.GameOver += OnGameStopped;
+        Referee.GameStarted += OnGameStarted;
+        Referee.GameCompleted += OnGameStopped;
+        Referee.GameOver += OnGameStopped;
         cardState.IsMatchedChanged += OnIsMatchedChanged;
         cardState.IsFlippedChanged += OnIsFlippedChanged;
         OnIsMatchedChanged(cardState.IsMatched);
         OnIsFlippedChanged(cardState.IsFlipped);
       });
       RegisterCallback<DetachFromPanelEvent>(e => {
-        referee.GameStarted -= OnGameStarted;
-        referee.GameCompleted -= OnGameStopped;
-        referee.GameOver -= OnGameStopped;
+        Referee.GameStarted -= OnGameStarted;
+        Referee.GameCompleted -= OnGameStopped;
+        Referee.GameOver -= OnGameStopped;
         cardState.IsMatchedChanged -= OnIsMatchedChanged;
         cardState.IsFlippedChanged -= OnIsFlippedChanged;
       });
