@@ -205,7 +205,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fada766864af1b141bece40d418cfc06, type: 2}
   - {fileID: 11400000, guid: fb1f932429063dc44a3d9656e206858b, type: 2}
   - {fileID: 11400000, guid: b83c74f0d4c9ae1459d0743a74b64a08, type: 2}
-  - {fileID: 11400000, guid: 76fce5457de29d84597f52f3ef9067fc, type: 2}
   _session:
     settings: {fileID: 0}
     cardStates: []

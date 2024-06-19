@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 5. Prodigy
   m_EditorClassIdentifier: 
   gridSize: {x: 6, y: 7}
-  memorizationTime: 0
+  memorizationTime: 0.1
   timeLimitPerPair: 1

@@ -4,6 +4,7 @@ using UnityEngine;
 
 namespace PairParade {
   public class Referee : MonoBehaviour {
+    public event System.Action Selected;
     public event System.Action Matched;
     public event System.Action Mismatched;
     public event System.Action GameStarted;
@@ -33,41 +34,54 @@ namespace PairParade {
           GameCompleted?.Invoke();
         }
       };
+      CardState.Selected += OnCardSelected;
+      Session = GameSession.Create(gameplaySettings, cards);
+      StartCoroutine(MemorizationPhase());
+    }
 
-      var session = GameSession.Create(gameplaySettings, cards);
+    void OnDestroy() {
+      CardState.Selected -= OnCardSelected;
+    }
 
-      foreach (var cardState in session.cardStates) {
-        cardState.IsMatchingChanged += isMatching => {
-          if (!isMatching) {
-            cardState.IsFlipped = false;
-            _selectedCardState = null;
-            return;
-          }
-
-          cardState.IsFlipped = true;
-
-          if (_selectedCardState == null) {
-            _selectedCardState = cardState;
-          } else if (cardState.card == _selectedCardState.card) {
-            cardState.IsMatched = true;
-            _selectedCardState.IsMatched = true;
-            _selectedCardState = null;
-            session.MatchCount++;
-            session.FlipCount++;
-            Matched?.Invoke();
-          } else {
-            _selectedCardState.IsFlipped = false;
-            _selectedCardState.IsMatching = false;
-            cardState.IsFlipped = false;
-            cardState.IsMatching = false;
-            session.FlipCount++;
-            Mismatched?.Invoke();
-          }
-        };
+    void OnCardSelected(CardState cardState) {
+      if (cardState.revealCoroutine != null) {
+        StopCoroutine(cardState.revealCoroutine);
+        cardState.revealCoroutine = null;
       }
 
-      Session = session;
-      StartCoroutine(MemorizationPhase());
+      if (_selectedCardState == null) {
+        cardState.IsFlipped = true;
+        _selectedCardState = cardState;
+        Selected?.Invoke();
+      } else if (_selectedCardState == cardState) {
+        cardState.IsFlipped = false;
+        _selectedCardState = null;
+        Selected?.Invoke();
+      } else if (_selectedCardState.card == cardState.card) {
+        cardState.IsFlipped = true;
+        _selectedCardState.IsMatched = cardState.IsMatched = true;
+        _selectedCardState = null;
+        Session.MatchCount++;
+        Session.FlipCount++;
+        Matched?.Invoke();
+      } else {
+        RevealMismatch(cardState);
+        RevealMismatch(_selectedCardState);
+        _selectedCardState = null;
+        Session.FlipCount++;
+        Mismatched?.Invoke();
+      }
+    }
+
+    void RevealMismatch(CardState cardState) {
+      cardState.revealCoroutine = StartCoroutine(RevealMemorizeHide(cardState));
+    }
+
+    IEnumerator RevealMemorizeHide(CardState cardState) {
+      cardState.IsFlipped = true;
+      yield return new WaitForSeconds(Session.settings.memorizationTime);
+      cardState.IsFlipped = false;
+      cardState.revealCoroutine = null;
     }
 
     IEnumerator MemorizationPhase() {
@@ -89,6 +103,7 @@ namespace PairParade {
         Session.RemainingTime -= Time.deltaTime;
       }
 
+      StopAllCoroutines();
       GameOver?.Invoke();
     }
   }

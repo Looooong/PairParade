@@ -13,5 +13,5 @@ MonoBehaviour:
   m_Name: 2. Easy
   m_EditorClassIdentifier: 
   gridSize: {x: 3, y: 4}
-  memorizationTime: 2
+  memorizationTime: 1
   timeLimitPerPair: 10
