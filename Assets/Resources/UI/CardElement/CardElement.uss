@@ -1,3 +1,11 @@
+#container {
+    transition: scale 100ms;
+}
+
+#container:hover {
+    scale: 1.2;
+}
+
 .face {
     position: absolute;
     left: 0;
@@ -5,8 +13,25 @@
     right: 0;
     bottom: 0;
     -unity-background-scale-mode: scale-to-fit;
-    margin-top: 16px;
-    margin-right: 16px;
-    margin-bottom: 16px;
-    margin-left: 16px;
+    margin: 16px;
+}
+
+#front-face {
+    scale: 0 1;
+    transition: scale 100ms linear;
+}
+
+#back-face {
+    scale: 1 1;
+    transition: scale 100ms linear 100ms;
+}
+
+.flipped #front-face {
+    scale: 1 1;
+    transition: scale 100ms linear 100ms;
+}
+
+.flipped #back-face {
+    scale: 0 1;
+    transition: scale 100ms linear;
 }

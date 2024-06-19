@@ -3,6 +3,7 @@ using UnityEngine.UIElements;
 
 namespace PairParade.UI {
   public class CardElement : VisualElement {
+    VisualElement Container => this.Q("container");
     VisualElement FrontFace => this.Q("front-face");
     VisualElement BackFace => this.Q("back-face");
 
@@ -51,8 +52,7 @@ namespace PairParade.UI {
     }
 
     void OnIsFlippedChanged(bool isFlipped) {
-      FrontFace.visible = isFlipped;
-      BackFace.visible = !isFlipped;
+      Container.EnableInClassList("flipped", isFlipped);
     }
 
     void OnPointerDown(PointerDownEvent _) => _state.Select();

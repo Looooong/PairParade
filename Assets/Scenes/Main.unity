@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205091385fec93e479f403767b37ab79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplaySettings: {fileID: 11400000, guid: 8f2076716bb8607418dcae2e3312cd6b, type: 2}
+  gameplaySettings: {fileID: 11400000, guid: ec4cf6a938d1a5144a06072f3d9d39c6, type: 2}
   cards:
   - {fileID: 11400000, guid: 29bd3df7e3649d242a1615d37d92093f, type: 2}
   - {fileID: 11400000, guid: 5b907f744b5a85645bb0616f53adfd0b, type: 2}
