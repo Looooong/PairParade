@@ -12,6 +12,8 @@ namespace PairParade {
     public event System.Action<int> MatchCountChanged;
     public event System.Action<int> FlipCountChanged;
     public event System.Action<float> RemainingTimeChanged;
+    public event System.Action<int> ScoreChanged;
+    public event System.Action<int> ComboChanged;
 
     public GameState State {
       get => _state;
@@ -45,6 +47,22 @@ namespace PairParade {
       }
     }
 
+    public int Score {
+      get => _score;
+      set {
+        _score = value;
+        ScoreChanged?.Invoke(value);
+      }
+    }
+
+    public int Combo {
+      get => _combo;
+      set {
+        _combo = value;
+        ComboChanged?.Invoke(value);
+      }
+    }
+
     [SerializeField]
     GameState _state;
     [SerializeField]
@@ -53,6 +71,10 @@ namespace PairParade {
     int _flipCount;
     [SerializeField]
     float _remainingTime;
+    [SerializeField]
+    int _score;
+    [SerializeField]
+    int _combo;
 
     public static GameSession Create(GameplaySettings settings, List<Card> cards) {
       var cardCount = settings.gridSize.x * settings.gridSize.y;

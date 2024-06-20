@@ -8,6 +8,8 @@ namespace PairParade.UI {
     VisualElement Body => this.Q("body");
     Label GameState => this.Q<Label>("game-state");
     Label RemainingTime => this.Q<Label>("remaining-time");
+    Label Combo => this.Q<Label>("combo");
+    Label Score => this.Q<Label>("score");
     Label MatchCount => this.Q<Label>("match-count");
     Label FlipCount => this.Q<Label>("flip-count");
 
@@ -33,6 +35,8 @@ namespace PairParade.UI {
       if (_session != null) {
         _session.StateChanged -= OnGameStateChanged;
         _session.RemainingTimeChanged -= OnRemainingTimeChanged;
+        _session.ComboChanged -= OnComboChanged;
+        _session.ScoreChanged -= OnScoreChanged;
         _session.MatchCountChanged -= OnMatchCountChanged;
         _session.FlipCountChanged -= OnFlipCountChanged;
       }
@@ -42,11 +46,15 @@ namespace PairParade.UI {
       if (_session != null) {
         _session.StateChanged += OnGameStateChanged;
         _session.RemainingTimeChanged += OnRemainingTimeChanged;
+        _session.ComboChanged += OnComboChanged;
+        _session.ScoreChanged += OnScoreChanged;
         _session.MatchCountChanged += OnMatchCountChanged;
         _session.FlipCountChanged += OnFlipCountChanged;
 
         OnGameStateChanged(_session.State);
         OnRemainingTimeChanged(_session.RemainingTime);
+        OnComboChanged(_session.Combo);
+        OnScoreChanged(_session.Score);
         OnMatchCountChanged(_session.MatchCount);
         OnFlipCountChanged(_session.FlipCount);
 
@@ -65,6 +73,10 @@ namespace PairParade.UI {
     };
 
     void OnRemainingTimeChanged(float time) => RemainingTime.text = float.IsFinite(time) && time > 0f ? $": {time:F1}s" : null;
+
+    void OnComboChanged(int count) => Combo.text = count > 0 ? $"Combo: +{count}" : "No Combo";
+
+    void OnScoreChanged(int score) => Score.text = score.ToString();
 
     void OnMatchCountChanged(int count) => MatchCount.text = count.ToString();
 
