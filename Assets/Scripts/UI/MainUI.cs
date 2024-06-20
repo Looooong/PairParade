@@ -6,7 +6,6 @@ namespace PairParade.UI {
   public class MainUI : VisualElement {
     public new class UxmlFactory : UxmlFactory<MainUI> { }
 
-    Button MainMenu => this.Q<Button>("main-menu");
     Label GameState => this.Q<Label>("game-state");
     Label RemainingTime => this.Q<Label>("remaining-time");
     Label Combo => this.Q<Label>("combo");
@@ -14,6 +13,8 @@ namespace PairParade.UI {
     Label MatchCount => this.Q<Label>("match-count");
     Label FlipCount => this.Q<Label>("flip-count");
     VisualElement Body => this.Q("body");
+    VisualElement GameCompleteDialog => this.Q("game-complete-dialog");
+    VisualElement GameOverDialog => this.Q("game-over-dialog");
 
     Referee _referee;
     GameSession _session;
@@ -33,10 +34,12 @@ namespace PairParade.UI {
       }
 
       RegisterCallback<AttachToPanelEvent>(_ => {
-        MainMenu.clicked += () => {
-          GameSession.Clear();
-          SceneManager.LoadScene("Menu");
-        };
+        foreach (var button in this.Query<Button>("main-menu").Build()) {
+          button.clicked += () => {
+            GameSession.Clear();
+            SceneManager.LoadScene("Menu");
+          };
+        }
       });
     }
 
@@ -73,13 +76,24 @@ namespace PairParade.UI {
       }
     }
 
-    void OnGameStateChanged(GameState state) => GameState.text = state switch {
-      PairParade.GameState.Memorization => "Get Ready",
-      PairParade.GameState.Playing => "Playing",
-      PairParade.GameState.Completed => "Game Finished",
-      PairParade.GameState.Failed => "Game Over",
-      _ => null
-    };
+    void OnGameStateChanged(GameState state) {
+      GameState.text = state switch {
+        PairParade.GameState.Memorization => "Get Ready",
+        PairParade.GameState.Playing => "Playing",
+        PairParade.GameState.Completed => "Game Finished",
+        PairParade.GameState.Failed => "Game Over",
+        _ => null
+      };
+
+      switch (state) {
+        case PairParade.GameState.Completed:
+          GameCompleteDialog.AddToClassList("opened");
+          break;
+        case PairParade.GameState.Failed:
+          GameOverDialog.AddToClassList("opened");
+          break;
+      }
+    }
 
     void OnRemainingTimeChanged(float time) => RemainingTime.text = float.IsFinite(time) && time > 0f ? $": {time:F1}s" : null;
 

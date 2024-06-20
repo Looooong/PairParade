@@ -5,3 +5,23 @@
 MenuUI .unity-base-slider__label {
     width: 180px;
 }
+
+.dialog {
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    align-items: center;
+    justify-content: center;
+    scale: 0 0;
+    transition: scale 200ms ease-out-elastic;
+}
+
+.dialog.opened {
+    scale: 1 1;
+}
+
+.dialog > VisualElement {
+    border-color: black;
+    border-width: 1px;
+    padding: 16px;
+}

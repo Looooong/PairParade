@@ -1,5 +1,5 @@
 <ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
-    <PairParade.UI.MainUI style="flex-grow: 1; padding-top: 16px; padding-bottom: 16px;">
+    <PairParade.UI.MainUI style="flex-grow: 1; margin-top: 16px; margin-bottom: 16px;">
         <ui:VisualElement name="header" style="flex-direction: row; align-items: center; justify-content: space-between;">
             <ui:Button text="Main Menu" display-tooltip-when-elided="true" name="main-menu" />
             <ui:VisualElement class="row">
@@ -27,5 +27,19 @@
             </ui:VisualElement>
         </ui:VisualElement>
         <ui:VisualElement name="body" style="flex-grow: 1; flex-wrap: wrap; flex-direction: row;" />
+        <ui:VisualElement name="game-complete-dialog" class="dialog">
+            <ui:VisualElement>
+                <ui:Label text="Congratulation!" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 32px;" />
+                <ui:Label text="You won the game!" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 16px;" />
+                <ui:Button text="Main Menu" display-tooltip-when-elided="true" name="main-menu" />
+            </ui:VisualElement>
+        </ui:VisualElement>
+        <ui:VisualElement name="game-over-dialog" class="dialog">
+            <ui:VisualElement>
+                <ui:Label text="Game Over!" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 32px;" />
+                <ui:Label text="Good luck next time!" display-tooltip-when-elided="true" style="-unity-text-align: upper-center; font-size: 16px;" />
+                <ui:Button text="Main Menu" display-tooltip-when-elided="true" name="main-menu" />
+            </ui:VisualElement>
+        </ui:VisualElement>
     </PairParade.UI.MainUI>
 </ui:UXML>
