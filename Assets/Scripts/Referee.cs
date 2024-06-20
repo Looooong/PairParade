@@ -35,7 +35,13 @@ namespace PairParade {
 
     void OnApplicationFocus(bool hasFocus) {
       if (!hasFocus && Session.State == GameState.Playing) {
-        PlayerPrefs.SetString(nameof(GameSession), JsonUtility.ToJson(Session));
+        GameSession.Persist(Session);
+      }
+    }
+
+    void OnApplicationPause(bool isPaused) {
+      if (isPaused && Session.State == GameState.Playing) {
+        GameSession.Persist(Session);
       }
     }
 
