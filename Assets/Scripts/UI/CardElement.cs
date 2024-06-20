@@ -18,8 +18,8 @@ namespace PairParade.UI {
       var gridSize = referee.Session.settings.gridSize;
       style.flexBasis = new Length(100f / gridSize.x, LengthUnit.Percent);
       style.height = new Length(100f / gridSize.y, LengthUnit.Percent);
-      FrontFace.style.backgroundImage = new(cardState.card.frontFace);
-      BackFace.style.backgroundImage = new(cardState.card.backFace);
+      FrontFace.style.backgroundImage = new(cardState.card?.frontFace);
+      BackFace.style.backgroundImage = new(cardState.card?.backFace);
 
       RegisterCallback<AttachToPanelEvent>(e => {
         referee.Session.StateChanged += OnGameStateChanged;

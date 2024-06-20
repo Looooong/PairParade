@@ -51,7 +51,7 @@ namespace PairParade {
           settings = settingsPreset.settings;
         }
 
-        Session = GameSession.Create(settings, cards);
+        Session = new(settings, cards);
       }
 
       Session.StateChanged += OnGameStateChanged;
@@ -116,7 +116,7 @@ namespace PairParade {
 
     IEnumerator RevealMemorizeHide(CardState cardState) {
       cardState.IsFlipped = true;
-      yield return new WaitForSeconds(.5f);
+      yield return new WaitForSeconds(.25f);
       cardState.IsFlipped = false;
       cardState.revealCoroutine = null;
     }

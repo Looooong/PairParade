@@ -76,9 +76,10 @@ namespace PairParade {
     [SerializeField]
     int _combo;
 
-    public static GameSession Create(GameplaySettings settings, List<Card> cards) {
+    public GameSession(GameplaySettings settings, List<Card> cards) {
       var cardCount = settings.gridSize.x * settings.gridSize.y;
-      cardCount -= cardCount % 2;
+      var oddParity = cardCount % 2;
+      cardCount -= oddParity;
 
       var chosenCards = new List<Card>(cards);
 
@@ -93,20 +94,20 @@ namespace PairParade {
         (chosenCards[i], chosenCards[j]) = (chosenCards[j], chosenCards[i]);
       }
 
-      var session = new GameSession() {
-        settings = settings,
-        cardStates = new(cardCount),
-        RemainingTime = settings.memorizationTime,
-      };
+      this.settings = settings;
+      cardStates = new(cardCount);
+      RemainingTime = settings.memorizationTime;
 
       for (var i = 0; i < cardCount; i++) {
-        session.cardStates.Add(new() {
+        cardStates.Add(new() {
           card = chosenCards[i],
           IsFlipped = true,
         });
       }
 
-      return session;
+      if (oddParity == 1) {
+        cardStates.Insert(cardCount / 2, new() { IsMatched = true });
+      }
     }
 
     public static void Persist(GameSession session) {
