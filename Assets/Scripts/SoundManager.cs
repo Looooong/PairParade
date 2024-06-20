@@ -7,6 +7,7 @@ namespace PairParade {
     public AudioClip Match;
     public AudioClip Mismatch;
     public AudioClip GameOver;
+    public AudioSource BackgroundMusic;
 
     AudioSource _audioSource;
     Referee _referee;
@@ -54,6 +55,7 @@ namespace PairParade {
       switch (state) {
         case GameState.Failed:
           _audioSource.PlayOneShot(GameOver);
+          BackgroundMusic.Stop();
           break;
       }
     }

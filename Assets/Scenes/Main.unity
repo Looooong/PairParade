@@ -205,18 +205,6 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fada766864af1b141bece40d418cfc06, type: 2}
   - {fileID: 11400000, guid: fb1f932429063dc44a3d9656e206858b, type: 2}
   - {fileID: 11400000, guid: b83c74f0d4c9ae1459d0743a74b64a08, type: 2}
-  _session:
-    settings:
-      gridSize: {x: 0, y: 0}
-      memorizationTime: 0
-      timeLimitPerPair: 0
-    cardStates: []
-    _state: 0
-    _matchCount: 0
-    _flipCount: 0
-    _remainingTime: 0
-    _score: 0
-    _combo: 0
 --- !u!4 &311604705
 Transform:
   m_ObjectHideFlags: 0
@@ -570,6 +558,7 @@ MonoBehaviour:
   Match: {fileID: 8300000, guid: 09dbb164c30966642b479b4aa59b20a7, type: 3}
   Mismatch: {fileID: 8300000, guid: 8a393e7f36cc5974294d1a1b480b6f1f, type: 3}
   GameOver: {fileID: 8300000, guid: f334bac9d625f1e478c427bff7ea9e43, type: 3}
+  BackgroundMusic: {fileID: 731533504}
 --- !u!4 &2085185838
 Transform:
   m_ObjectHideFlags: 0
