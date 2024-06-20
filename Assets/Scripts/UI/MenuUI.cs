@@ -18,7 +18,11 @@ namespace PairParade.UI {
     GameplaySettings _settings;
 
     public MenuUI() {
-      RegisterCallback<AttachToPanelEvent>(OnPanelAttached);
+      if (GameSession.TryRestore(out _)) {
+        SceneManager.LoadScene("Main");
+      } else {
+        RegisterCallback<AttachToPanelEvent>(OnPanelAttached);
+      }
     }
 
     void OnPanelAttached(AttachToPanelEvent _) {
