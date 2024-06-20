@@ -6,6 +6,7 @@ namespace PairParade.UI {
     public new class UxmlFactory : UxmlFactory<MainUI> { }
 
     VisualElement Body => this.Q("body");
+    Label GameState => this.Q<Label>("game-state");
     Label RemainingTime => this.Q<Label>("remaining-time");
     Label MatchCount => this.Q<Label>("match-count");
     Label FlipCount => this.Q<Label>("flip-count");
@@ -30,6 +31,7 @@ namespace PairParade.UI {
 
     void OnSessionChanged(GameSession session) {
       if (_session != null) {
+        _session.StateChanged -= OnGameStateChanged;
         _session.RemainingTimeChanged -= OnRemainingTimeChanged;
         _session.MatchCountChanged -= OnMatchCountChanged;
         _session.FlipCountChanged -= OnFlipCountChanged;
@@ -38,10 +40,12 @@ namespace PairParade.UI {
       _session = session;
 
       if (_session != null) {
+        _session.StateChanged += OnGameStateChanged;
         _session.RemainingTimeChanged += OnRemainingTimeChanged;
         _session.MatchCountChanged += OnMatchCountChanged;
         _session.FlipCountChanged += OnFlipCountChanged;
 
+        OnGameStateChanged(_session.State);
         OnRemainingTimeChanged(_session.RemainingTime);
         OnMatchCountChanged(_session.MatchCount);
         OnFlipCountChanged(_session.FlipCount);
@@ -52,7 +56,15 @@ namespace PairParade.UI {
       }
     }
 
-    void OnRemainingTimeChanged(float time) => RemainingTime.text = float.IsFinite(time) ? $"{time:F1}s" : "Unlimited";
+    void OnGameStateChanged(GameState state) => GameState.text = state switch {
+      PairParade.GameState.Memorization => "Get Ready",
+      PairParade.GameState.Playing => "Playing",
+      PairParade.GameState.Completed => "Game Finished",
+      PairParade.GameState.Failed => "Game Over",
+      _ => null
+    };
+
+    void OnRemainingTimeChanged(float time) => RemainingTime.text = float.IsFinite(time) && time > 0f ? $": {time:F1}s" : null;
 
     void OnMatchCountChanged(int count) => MatchCount.text = count.ToString();
 

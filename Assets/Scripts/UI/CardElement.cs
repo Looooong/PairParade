@@ -22,29 +22,29 @@ namespace PairParade.UI {
       BackFace.style.backgroundImage = new(cardState.card.backFace);
 
       RegisterCallback<AttachToPanelEvent>(e => {
-        Referee.GameStarted += OnGameStarted;
-        Referee.GameCompleted += OnGameStopped;
-        Referee.GameOver += OnGameStopped;
+        referee.Session.StateChanged += OnGameStateChanged;
         cardState.IsMatchedChanged += OnIsMatchedChanged;
         cardState.IsFlippedChanged += OnIsFlippedChanged;
+        OnGameStateChanged(referee.Session.State);
         OnIsMatchedChanged(cardState.IsMatched);
         OnIsFlippedChanged(cardState.IsFlipped);
       });
       RegisterCallback<DetachFromPanelEvent>(e => {
-        Referee.GameStarted -= OnGameStarted;
-        Referee.GameCompleted -= OnGameStopped;
-        Referee.GameOver -= OnGameStopped;
+        referee.Session.StateChanged -= OnGameStateChanged;
         cardState.IsMatchedChanged -= OnIsMatchedChanged;
         cardState.IsFlippedChanged -= OnIsFlippedChanged;
       });
     }
 
-    void OnGameStarted() {
-      RegisterCallback<PointerDownEvent>(OnPointerDown);
-    }
-
-    void OnGameStopped() {
-      UnregisterCallback<PointerDownEvent>(OnPointerDown);
+    void OnGameStateChanged(GameState state) {
+      switch (state) {
+        case GameState.Playing:
+          RegisterCallback<PointerDownEvent>(OnPointerDown);
+          break;
+        default:
+          UnregisterCallback<PointerDownEvent>(OnPointerDown);
+          break;
+      }
     }
 
     void OnIsMatchedChanged(bool isMatched) {

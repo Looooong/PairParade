@@ -4,12 +4,9 @@ using UnityEngine;
 
 namespace PairParade {
   public class Referee : MonoBehaviour {
-    public static event System.Action Selected;
-    public static event System.Action Matched;
-    public static event System.Action Mismatched;
-    public static event System.Action GameStarted;
-    public static event System.Action GameCompleted;
-    public static event System.Action GameOver;
+    public event System.Action Selected;
+    public event System.Action Matched;
+    public event System.Action Mismatched;
     public event System.Action<GameSession> SessionChanged;
 
     public GameplaySettingsPreset settingsPreset;
@@ -26,17 +23,9 @@ namespace PairParade {
     [SerializeField]
     GameSession _session;
     CardState _selectedCardState;
-    bool _gameStopped;
 
     void Start() {
-      Matched += () => {
-        if (Session.cardStates.TrueForAll(s => s.IsMatched)) {
-          StopAllCoroutines();
-          GameCompleted?.Invoke();
-        }
-      };
-      GameCompleted += OnGameStopped;
-      GameOver += OnGameStopped;
+      Matched += CheckGameCompletion;
       CardState.Selected += OnCardSelected;
       InitializeSession();
     }
@@ -46,7 +35,7 @@ namespace PairParade {
     }
 
     void OnApplicationFocus(bool hasFocus) {
-      if (!hasFocus && !_gameStopped) {
+      if (!hasFocus && Session.State == GameState.Playing) {
         PlayerPrefs.SetString(nameof(GameSession), JsonUtility.ToJson(Session));
       }
     }
@@ -54,20 +43,38 @@ namespace PairParade {
     void InitializeSession() {
       if (PlayerPrefs.HasKey(nameof(GameSession))) {
         Session = JsonUtility.FromJson<GameSession>(PlayerPrefs.GetString(nameof(GameSession)));
-        StartCoroutine(StartGame());
 
         foreach (var cardState in Session.cardStates) {
           cardState.IsFlipped = cardState.IsMatched;
         }
       } else {
         Session = GameSession.Create(settingsPreset.settings, cards);
-        StartCoroutine(MemorizationPhase());
+      }
+
+      Session.StateChanged += OnGameStateChanged;
+      OnGameStateChanged(Session.State);
+    }
+
+    void CheckGameCompletion() {
+      if (Session.cardStates.TrueForAll(s => s.IsMatched)) {
+        Session.State = GameState.Completed;
       }
     }
 
-    void OnGameStopped() {
-      _gameStopped = true;
-      PlayerPrefs.DeleteKey(nameof(GameSession));
+    void OnGameStateChanged(GameState state) {
+      switch (state) {
+        case GameState.Memorization:
+          StartCoroutine(MemorizationPhase());
+          break;
+        case GameState.Playing:
+          StartCoroutine(PlayingPhase());
+          break;
+        case GameState.Completed:
+        case GameState.Failed:
+          PlayerPrefs.DeleteKey(nameof(GameSession));
+          StopAllCoroutines();
+          break;
+      }
     }
 
     void OnCardSelected(CardState cardState) {
@@ -106,24 +113,28 @@ namespace PairParade {
 
     IEnumerator RevealMemorizeHide(CardState cardState) {
       cardState.IsFlipped = true;
-      yield return new WaitForSeconds(Session.settings.memorizationTime);
+      yield return new WaitForSeconds(.5f);
       cardState.IsFlipped = false;
       cardState.revealCoroutine = null;
     }
 
     IEnumerator MemorizationPhase() {
-      yield return new WaitForSeconds(Session.settings.memorizationTime);
+      while (Session.RemainingTime > 0f) {
+        yield return null;
+        Session.RemainingTime -= Time.deltaTime;
+      }
 
       foreach (var cardState in Session.cardStates) {
         cardState.IsFlipped = false;
       }
 
-      StartCoroutine(StartGame());
+      var settings = Session.settings;
+      var gridSize = settings.gridSize;
+      Session.RemainingTime = settings.timeLimitPerPair * gridSize.x * gridSize.y / 2;
+      Session.State = GameState.Playing;
     }
 
-    IEnumerator StartGame() {
-      GameStarted?.Invoke();
-
+    IEnumerator PlayingPhase() {
       if (float.IsInfinity(Session.RemainingTime)) yield break;
 
       while (Session.RemainingTime > 0f) {
@@ -131,8 +142,7 @@ namespace PairParade {
         Session.RemainingTime -= Time.deltaTime;
       }
 
-      StopAllCoroutines();
-      GameOver?.Invoke();
+      Session.State = GameState.Failed;
     }
   }
 }

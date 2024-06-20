@@ -8,9 +8,18 @@ namespace PairParade {
     public GameplaySettings settings;
     public List<CardState> cardStates;
 
+    public event System.Action<GameState> StateChanged;
     public event System.Action<int> MatchCountChanged;
     public event System.Action<int> FlipCountChanged;
     public event System.Action<float> RemainingTimeChanged;
+
+    public GameState State {
+      get => _state;
+      set {
+        _state = value;
+        StateChanged?.Invoke(value);
+      }
+    }
 
     public int MatchCount {
       get => _matchCount;
@@ -36,7 +45,8 @@ namespace PairParade {
       }
     }
 
-
+    [SerializeField]
+    GameState _state;
     [SerializeField]
     int _matchCount;
     [SerializeField]
@@ -64,7 +74,7 @@ namespace PairParade {
       var session = new GameSession() {
         settings = settings,
         cardStates = new(cardCount),
-        RemainingTime = settings.timeLimitPerPair * cardCount / 2,
+        RemainingTime = settings.memorizationTime,
       };
 
       for (var i = 0; i < cardCount; i++) {

@@ -2,11 +2,10 @@
     <PairParade.UI.MainUI style="flex-grow: 1;">
         <ui:VisualElement name="header" style="flex-direction: row; align-items: center; justify-content: space-between;">
             <ui:VisualElement style="flex-direction: row;">
-                <ui:Button text="Home" display-tooltip-when-elided="true" />
-                <ui:Button text="Restart" display-tooltip-when-elided="true" />
+                <ui:Button text="Main Menu" display-tooltip-when-elided="true" name="main-menu" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row;">
-                <ui:Label text="Time Limit:" display-tooltip-when-elided="true" />
+                <ui:Label text="Ready" display-tooltip-when-elided="true" name="game-state" />
                 <ui:Label text="Unlimited" display-tooltip-when-elided="true" name="remaining-time" />
             </ui:VisualElement>
             <ui:VisualElement style="flex-direction: row;">

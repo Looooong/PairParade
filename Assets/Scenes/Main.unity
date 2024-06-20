@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205091385fec93e479f403767b37ab79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  settingsPreset: {fileID: 11400000, guid: 095a5e39350a54543afbed6f0ef02483, type: 2}
+  settingsPreset: {fileID: 11400000, guid: c551d08880151164caf3e9eb7b0e1d6c, type: 2}
   cards:
   - {fileID: 11400000, guid: 29bd3df7e3649d242a1615d37d92093f, type: 2}
   - {fileID: 11400000, guid: 5b907f744b5a85645bb0616f53adfd0b, type: 2}
@@ -211,6 +211,7 @@ MonoBehaviour:
       memorizationTime: 0
       timeLimitPerPair: 0
     cardStates: []
+    _state: 0
     _matchCount: 0
     _flipCount: 0
     _remainingTime: 0
