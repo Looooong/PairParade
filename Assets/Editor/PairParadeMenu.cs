@@ -5,7 +5,18 @@ using UnityEditor;
 using UnityEngine;
 
 namespace PairParade.Editor {
-  public static class CardEditor {
+  public static class PairParadeMenu {
+    [MenuItem("Pair Parade/Log game session")]
+    static void LogGameSession() {
+      Debug.Log(PlayerPrefs.HasKey(nameof(GameSession)) ? PlayerPrefs.GetString(nameof(GameSession)) : $"{nameof(GameSession)} is not set");
+    }
+
+    [MenuItem("Pair Parade/Clear game session")]
+    static void ClearGameSession() {
+      PlayerPrefs.DeleteKey(nameof(GameSession));
+      Debug.Log($"{nameof(GameSession)} cleared!");
+    }
+
     [MenuItem("Pair Parade/Convert selected Sprites to Cards")]
     static void ConvertSelectedSpritesToCard() {
       var folder = EditorUtility.SaveFolderPanel("Choose folder to save the cards", "Assets", null);

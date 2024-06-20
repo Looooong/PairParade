@@ -12,7 +12,7 @@ namespace PairParade {
     public static event System.Action GameOver;
     public event System.Action<GameSession> SessionChanged;
 
-    public GameplaySettings gameplaySettings;
+    public GameplaySettingsPreset settingsPreset;
     public List<Card> cards;
 
     public GameSession Session {
@@ -26,6 +26,7 @@ namespace PairParade {
     [SerializeField]
     GameSession _session;
     CardState _selectedCardState;
+    bool _gameStopped;
 
     void Start() {
       Matched += () => {
@@ -34,13 +35,39 @@ namespace PairParade {
           GameCompleted?.Invoke();
         }
       };
+      GameCompleted += OnGameStopped;
+      GameOver += OnGameStopped;
       CardState.Selected += OnCardSelected;
-      Session = GameSession.Create(gameplaySettings, cards);
-      StartCoroutine(MemorizationPhase());
+      InitializeSession();
     }
 
     void OnDestroy() {
       CardState.Selected -= OnCardSelected;
+    }
+
+    void OnApplicationFocus(bool hasFocus) {
+      if (!hasFocus && !_gameStopped) {
+        PlayerPrefs.SetString(nameof(GameSession), JsonUtility.ToJson(Session));
+      }
+    }
+
+    void InitializeSession() {
+      if (PlayerPrefs.HasKey(nameof(GameSession))) {
+        Session = JsonUtility.FromJson<GameSession>(PlayerPrefs.GetString(nameof(GameSession)));
+        StartCoroutine(StartGame());
+
+        foreach (var cardState in Session.cardStates) {
+          cardState.IsFlipped = cardState.IsMatched;
+        }
+      } else {
+        Session = GameSession.Create(settingsPreset.settings, cards);
+        StartCoroutine(MemorizationPhase());
+      }
+    }
+
+    void OnGameStopped() {
+      _gameStopped = true;
+      PlayerPrefs.DeleteKey(nameof(GameSession));
     }
 
     void OnCardSelected(CardState cardState) {
@@ -85,17 +112,18 @@ namespace PairParade {
     }
 
     IEnumerator MemorizationPhase() {
-      yield return new WaitForSeconds(gameplaySettings.memorizationTime);
+      yield return new WaitForSeconds(Session.settings.memorizationTime);
 
       foreach (var cardState in Session.cardStates) {
         cardState.IsFlipped = false;
       }
 
-      GameStarted?.Invoke();
-      StartCoroutine(CheckRemainingTime());
+      StartCoroutine(StartGame());
     }
 
-    IEnumerator CheckRemainingTime() {
+    IEnumerator StartGame() {
+      GameStarted?.Invoke();
+
       if (float.IsInfinity(Session.RemainingTime)) yield break;
 
       while (Session.RemainingTime > 0f) {

@@ -9,9 +9,10 @@ MonoBehaviour:
   m_GameObject: {fileID: 0}
   m_Enabled: 1
   m_EditorHideFlags: 0
-  m_Script: {fileID: 11500000, guid: fced101b918fb3241aeb906a62e0e81d, type: 3}
+  m_Script: {fileID: 11500000, guid: 830f088ef71a9dc46b039b09ccd0825c, type: 3}
   m_Name: 2. Easy
   m_EditorClassIdentifier: 
-  gridSize: {x: 3, y: 4}
-  memorizationTime: 1
-  timeLimitPerPair: 10
+  settings:
+    gridSize: {x: 3, y: 4}
+    memorizationTime: 1
+    timeLimitPerPair: 8

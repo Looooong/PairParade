@@ -151,7 +151,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 205091385fec93e479f403767b37ab79, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  gameplaySettings: {fileID: 11400000, guid: ec4cf6a938d1a5144a06072f3d9d39c6, type: 2}
+  settingsPreset: {fileID: 11400000, guid: 095a5e39350a54543afbed6f0ef02483, type: 2}
   cards:
   - {fileID: 11400000, guid: 29bd3df7e3649d242a1615d37d92093f, type: 2}
   - {fileID: 11400000, guid: 5b907f744b5a85645bb0616f53adfd0b, type: 2}
@@ -206,7 +206,10 @@ MonoBehaviour:
   - {fileID: 11400000, guid: fb1f932429063dc44a3d9656e206858b, type: 2}
   - {fileID: 11400000, guid: b83c74f0d4c9ae1459d0743a74b64a08, type: 2}
   _session:
-    settings: {fileID: 0}
+    settings:
+      gridSize: {x: 0, y: 0}
+      memorizationTime: 0
+      timeLimitPerPair: 0
     cardStates: []
     _matchCount: 0
     _flipCount: 0
