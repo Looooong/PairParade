@@ -109,8 +109,24 @@ namespace PairParade {
       return session;
     }
 
-    public static GameSession Load(string json) => JsonUtility.FromJson<GameSession>(json);
+    public static void Persist(GameSession session) {
+      PlayerPrefs.SetString(nameof(GameSession), JsonUtility.ToJson(session));
+    }
 
-    public static string Save(GameSession session) => JsonUtility.ToJson(session);
+    public static bool TryRestore(out GameSession session) {
+      if (PlayerPrefs.HasKey(nameof(GameSession))) {
+        session = JsonUtility.FromJson<GameSession>(
+          PlayerPrefs.GetString(nameof(GameSession))
+        );
+        return true;
+      }
+
+      session = default;
+      return false;
+    }
+
+    public static void Clear() {
+      PlayerPrefs.DeleteKey(nameof(GameSession));
+    }
   }
 }

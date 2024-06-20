@@ -1,9 +1,14 @@
-<?xml version="1.0" encoding="utf-8"?>
-<engine:UXML
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-    xmlns:engine="UnityEngine.UIElements"
-    xmlns:editor="UnityEditor.UIElements"
-    xsi:noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd"
->
-    
-</engine:UXML>
+<ui:UXML xmlns:ui="UnityEngine.UIElements" xmlns:uie="UnityEditor.UIElements" xsi="http://www.w3.org/2001/XMLSchema-instance" engine="UnityEngine.UIElements" editor="UnityEditor.UIElements" noNamespaceSchemaLocation="../../../UIElementsSchema/UIElements.xsd" editor-extension-mode="False">
+    <PairParade.UI.MenuUI style="flex-grow: 1; padding-top: 16px; padding-right: 16px; padding-bottom: 16px; padding-left: 16px; justify-content: center; align-self: center; max-width: 480px; width: 100%;">
+        <ui:Label text="Pair Parade" display-tooltip-when-elided="true" style="font-size: 50%; -unity-text-align: middle-center;" />
+        <ui:VisualElement>
+            <ui:DropdownField label="Difficulty" name="difficulty" />
+            <ui:SliderInt picking-mode="Ignore" label="Row" high-value="6" low-value="2" direction="Horizontal" name="row" show-input-field="false" />
+            <ui:SliderInt picking-mode="Ignore" label="Column" high-value="6" low-value="2" direction="Horizontal" name="column" show-input-field="false" />
+            <ui:Slider picking-mode="Ignore" label="Memorization Time" high-value="5" name="memorization-time" show-input-field="false" />
+            <ui:Slider picking-mode="Ignore" label="Time Limit per Pair" high-value="10" name="time-limit-per-pair" show-input-field="false" />
+        </ui:VisualElement>
+        <ui:Button text="Start Game" display-tooltip-when-elided="true" name="start-game" />
+        <ui:Button text="Quit" display-tooltip-when-elided="true" name="quit" />
+    </PairParade.UI.MenuUI>
+</ui:UXML>

@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 830f088ef71a9dc46b039b09ccd0825c, type: 3}
   m_Name: 1. Beginner
   m_EditorClassIdentifier: 
+  displayName: Beginner
   settings:
     gridSize: {x: 2, y: 3}
     memorizationTime: 2

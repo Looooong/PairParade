@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 830f088ef71a9dc46b039b09ccd0825c, type: 3}
   m_Name: 5. Prodigy
   m_EditorClassIdentifier: 
+  displayName: Prodigy
   settings:
     gridSize: {x: 4, y: 6}
     memorizationTime: 0.1

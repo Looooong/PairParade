@@ -6,14 +6,25 @@ using UnityEngine;
 
 namespace PairParade.Editor {
   public static class PairParadeMenu {
+    [MenuItem("Pair Parade/Log gameplay settings")]
+    static void LogGameplaySettings() {
+      Debug.Log(PlayerPrefs.HasKey(nameof(GameplaySettings)) ? PlayerPrefs.GetString(nameof(GameplaySettings)) : $"{nameof(GameplaySettings)} is not set!");
+    }
+
+    [MenuItem("Pair Parade/Clear gameplay settings")]
+    static void ClearGameplaySettings() {
+      GameplaySettings.Clear();
+      Debug.Log($"{nameof(GameplaySettings)} cleared!");
+    }
+
     [MenuItem("Pair Parade/Log game session")]
     static void LogGameSession() {
-      Debug.Log(PlayerPrefs.HasKey(nameof(GameSession)) ? PlayerPrefs.GetString(nameof(GameSession)) : $"{nameof(GameSession)} is not set");
+      Debug.Log(PlayerPrefs.HasKey(nameof(GameSession)) ? PlayerPrefs.GetString(nameof(GameSession)) : $"{nameof(GameSession)} is not set!");
     }
 
     [MenuItem("Pair Parade/Clear game session")]
     static void ClearGameSession() {
-      PlayerPrefs.DeleteKey(nameof(GameSession));
+      GameSession.Clear();
       Debug.Log($"{nameof(GameSession)} cleared!");
     }
 

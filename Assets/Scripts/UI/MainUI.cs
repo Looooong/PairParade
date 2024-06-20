@@ -1,17 +1,19 @@
 using UnityEngine;
+using UnityEngine.SceneManagement;
 using UnityEngine.UIElements;
 
 namespace PairParade.UI {
   public class MainUI : VisualElement {
     public new class UxmlFactory : UxmlFactory<MainUI> { }
 
-    VisualElement Body => this.Q("body");
+    Button MainMenu => this.Q<Button>("main-menu");
     Label GameState => this.Q<Label>("game-state");
     Label RemainingTime => this.Q<Label>("remaining-time");
     Label Combo => this.Q<Label>("combo");
     Label Score => this.Q<Label>("score");
     Label MatchCount => this.Q<Label>("match-count");
     Label FlipCount => this.Q<Label>("flip-count");
+    VisualElement Body => this.Q("body");
 
     Referee _referee;
     GameSession _session;
@@ -20,15 +22,22 @@ namespace PairParade.UI {
       _referee = Object.FindAnyObjectByType<Referee>();
 
       if (_referee != null) {
-        RegisterCallback<AttachToPanelEvent>(e => {
+        RegisterCallback<AttachToPanelEvent>(_ => {
           _referee.SessionChanged += OnSessionChanged;
           OnSessionChanged(_referee.Session);
         });
-        RegisterCallback<DetachFromPanelEvent>(e => {
+        RegisterCallback<DetachFromPanelEvent>(_ => {
           _referee.SessionChanged -= OnSessionChanged;
           OnSessionChanged(null);
         });
       }
+
+      RegisterCallback<AttachToPanelEvent>(_ => {
+        MainMenu.clicked += () => {
+          GameSession.Clear();
+          SceneManager.LoadScene("Menu");
+        };
+      });
     }
 
     void OnSessionChanged(GameSession session) {

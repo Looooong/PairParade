@@ -1,0 +1,7 @@
+.row {
+    flex-direction: row;
+}
+
+MenuUI .unity-base-slider__label {
+    width: 180px;
+}

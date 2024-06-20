@@ -20,7 +20,6 @@ namespace PairParade {
       }
     }
 
-    [SerializeField]
     GameSession _session;
     CardState _selectedCardState;
 
@@ -41,14 +40,18 @@ namespace PairParade {
     }
 
     void InitializeSession() {
-      if (PlayerPrefs.HasKey(nameof(GameSession))) {
-        Session = JsonUtility.FromJson<GameSession>(PlayerPrefs.GetString(nameof(GameSession)));
+      if (GameSession.TryRestore(out var session)) {
+        Session = session;
 
         foreach (var cardState in Session.cardStates) {
           cardState.IsFlipped = cardState.IsMatched;
         }
       } else {
-        Session = GameSession.Create(settingsPreset.settings, cards);
+        if (!GameplaySettings.TryRestore(out var settings)) {
+          settings = settingsPreset.settings;
+        }
+
+        Session = GameSession.Create(settings, cards);
       }
 
       Session.StateChanged += OnGameStateChanged;
@@ -71,7 +74,7 @@ namespace PairParade {
           break;
         case GameState.Completed:
         case GameState.Failed:
-          PlayerPrefs.DeleteKey(nameof(GameSession));
+          GameSession.Clear();
           StopAllCoroutines();
           break;
       }

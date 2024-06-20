@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 830f088ef71a9dc46b039b09ccd0825c, type: 3}
   m_Name: 3. Medium
   m_EditorClassIdentifier: 
+  displayName: Medium
   settings:
     gridSize: {x: 4, y: 4}
     memorizationTime: 0.5

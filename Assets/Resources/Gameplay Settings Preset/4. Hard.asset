@@ -12,6 +12,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 830f088ef71a9dc46b039b09ccd0825c, type: 3}
   m_Name: 4. Hard
   m_EditorClassIdentifier: 
+  displayName: Hard
   settings:
     gridSize: {x: 4, y: 5}
     memorizationTime: 0.25
