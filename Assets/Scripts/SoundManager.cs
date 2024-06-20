@@ -6,6 +6,7 @@ namespace PairParade {
     public AudioClip Select;
     public AudioClip Match;
     public AudioClip Mismatch;
+    public AudioClip GameComplete;
     public AudioClip GameOver;
     public AudioSource BackgroundMusic;
 
@@ -53,6 +54,10 @@ namespace PairParade {
 
     void OnGameStateChanged(GameState state) {
       switch (state) {
+        case GameState.Completed:
+          _audioSource.PlayOneShot(GameComplete);
+          BackgroundMusic.Stop();
+          break;
         case GameState.Failed:
           _audioSource.PlayOneShot(GameOver);
           BackgroundMusic.Stop();
