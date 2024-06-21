@@ -15,5 +15,5 @@ MonoBehaviour:
   displayName: Prodigy
   settings:
     gridSize: {x: 4, y: 6}
-    memorizationTime: 0.1
+    memorizationTime: 5
     timeLimitPerPair: 1

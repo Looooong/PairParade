@@ -15,5 +15,5 @@ MonoBehaviour:
   displayName: Beginner
   settings:
     gridSize: {x: 2, y: 3}
-    memorizationTime: 2
+    memorizationTime: 1
     timeLimitPerPair: Infinity

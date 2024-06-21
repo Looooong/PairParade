@@ -15,5 +15,5 @@ MonoBehaviour:
   displayName: Hard
   settings:
     gridSize: {x: 4, y: 5}
-    memorizationTime: 0.25
+    memorizationTime: 4
     timeLimitPerPair: 2

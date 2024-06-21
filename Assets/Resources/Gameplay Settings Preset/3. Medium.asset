@@ -15,5 +15,5 @@ MonoBehaviour:
   displayName: Medium
   settings:
     gridSize: {x: 4, y: 4}
-    memorizationTime: 0.5
+    memorizationTime: 3
     timeLimitPerPair: 4
