@@ -33,18 +33,33 @@ namespace PairParade.UI {
       }
 
       Difficulty.choices = presets.Select(p => p.displayName).Append("Custom").ToList();
-      Difficulty.value = "Custom";
+      Difficulty.value = PlayerPrefs.GetString(nameof(GameplaySettingsPreset), presets[0].displayName);
       Difficulty.RegisterValueChangedCallback(e => {
         if (e.newValue != "Custom") {
           _settings = presets.First(p => p.displayName == e.newValue).settings;
           UpdateControlValues();
           UpdateControlLabels();
+          GameplaySettings.Persist(_settings);
         }
+
+        PlayerPrefs.SetString(nameof(GameplaySettingsPreset), e.newValue);
       });
-      Row.RegisterValueChangedCallback(e => _settings.gridSize.y = e.newValue);
-      Column.RegisterValueChangedCallback(e => _settings.gridSize.x = e.newValue);
-      MemorizationTime.RegisterValueChangedCallback(e => _settings.memorizationTime = e.newValue);
-      TimeLimitPerPair.RegisterValueChangedCallback(e => _settings.timeLimitPerPair = e.newValue);
+      Row.RegisterValueChangedCallback(e => {
+        _settings.gridSize.y = e.newValue;
+        OnAnyValueChange();
+      });
+      Column.RegisterValueChangedCallback(e => {
+        _settings.gridSize.x = e.newValue;
+        OnAnyValueChange();
+      });
+      MemorizationTime.RegisterValueChangedCallback(e => {
+        _settings.memorizationTime = e.newValue;
+        OnAnyValueChange();
+      });
+      TimeLimitPerPair.RegisterValueChangedCallback(e => {
+        _settings.timeLimitPerPair = e.newValue;
+        OnAnyValueChange();
+      });
       StartGame.clicked += () => SceneManager.LoadScene("Main");
       Quit.clicked += () => {
 #if UNITY_EDITOR
@@ -53,17 +68,14 @@ namespace PairParade.UI {
         Application.Quit();
 #endif
       };
-      RegisterCallback<ChangeEvent<int>>(OnAnyValueChange);
-      RegisterCallback<ChangeEvent<float>>(OnAnyValueChange);
-      RegisterCallback<ChangeEvent<string>>(_ => GameplaySettings.Persist(_settings));
 
       UpdateControlValues();
       UpdateControlLabels();
     }
 
-    void OnAnyValueChange<T>(ChangeEvent<T> _) {
+    void OnAnyValueChange() {
       UpdateControlLabels();
-      Difficulty.SetValueWithoutNotify("Custom");
+      Difficulty.value = "Custom";
       GameplaySettings.Persist(_settings);
     }
 
