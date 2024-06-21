@@ -49,6 +49,7 @@ namespace PairParade.UI {
 
     void OnIsMatchedChanged(bool isMatched) {
       SetEnabled(!isMatched);
+      Container.EnableInClassList("is-matched", isMatched);
     }
 
     void OnIsFlippedChanged(bool isFlipped) {

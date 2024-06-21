@@ -17,7 +17,7 @@ MenuUI .unity-base-slider__label {
 }
 
 .dialog.opened {
-    scale: 1 1;
+    scale: 1;
 }
 
 .dialog > VisualElement {

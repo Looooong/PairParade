@@ -6,6 +6,10 @@
     scale: 1.1;
 }
 
+#container.is-matched {
+    scale: 0;
+}
+
 .face {
     position: absolute;
     left: 0;
@@ -22,12 +26,12 @@
 }
 
 #back-face {
-    scale: 1 1;
+    scale: 1;
     transition: scale 100ms linear 100ms;
 }
 
 .flipped #front-face {
-    scale: 1 1;
+    scale: 1;
     transition: scale 100ms linear 100ms;
 }
 
