@@ -42,7 +42,7 @@ namespace PairParade.UI {
         }
       });
       Row.RegisterValueChangedCallback(e => _settings.gridSize.y = e.newValue);
-      Column.RegisterValueChangedCallback(e => _settings.gridSize.y = e.newValue);
+      Column.RegisterValueChangedCallback(e => _settings.gridSize.x = e.newValue);
       MemorizationTime.RegisterValueChangedCallback(e => _settings.memorizationTime = e.newValue);
       TimeLimitPerPair.RegisterValueChangedCallback(e => _settings.timeLimitPerPair = e.newValue);
       StartGame.clicked += () => SceneManager.LoadScene("Main");
