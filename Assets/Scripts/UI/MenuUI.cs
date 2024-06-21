@@ -70,8 +70,8 @@ namespace PairParade.UI {
     void UpdateControlLabels() {
       Row.label = $"Row: {Row.value}";
       Column.label = $"Column: {Column.value}";
-      MemorizationTime.label = $"Memorization Time: {MemorizationTime.value:F1}";
-      TimeLimitPerPair.label = $"Time Limit per Pair: {TimeLimitPerPair.value:F1}";
+      MemorizationTime.label = $"Memorization Time: {MemorizationTime.value:F2}s";
+      TimeLimitPerPair.label = $"Time Limit per Pair: {TimeLimitPerPair.value:F2}s";
     }
 
     void UpdateControlValues() {
